@@ -27,7 +27,7 @@ AEnemy::AEnemy()
 	Sprite->SetupAttachment(RootComponent);
 //	Idle->SetupAttachment(RootComponent);
 //	Walking->SetupAttachment(RootComponent);
-	Life = 4;
+	Life = 1;
 	Speed = 1;
 
 }
@@ -45,11 +45,20 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Move();
+	//Move();
 	if (Life <= 0) {
+		UE_LOG(LogTemp, Warning, TEXT("PASSOU DE FASE!!!"));
 		Destroy();
 	}
 }
+/*void AEnemy::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp,
+	FVector NormalImpulse, const FHitResult & Hit)
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("EXPLODED"));
+	Destroy();
+
+}*/
 
 // Called to bind functionality to input
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -65,13 +74,15 @@ int AEnemy::GetLife()
 {
 	return Life;
 }
-void AEnemy::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, FVector NormalImpulse, const FHitResult & Hit) {
+void AEnemy::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, FVector NormalImpulse,
+	const FHitResult & Hit) {
 	
 	if (OtherActor != nullptr && OtherActor->IsA(APersonagem::StaticClass())) {
 		APersonagem* Personagem = Cast<APersonagem>(OtherActor);
 		Personagem->SetLife(Personagem->GetLife() - 0.1);
 		UE_LOG(LogTemp, Warning, TEXT("%f"), Personagem->GetLife());
-		ChangeSpeed();
+		//ChangeSpeed();
+		SetLife(GetLife() - 1);
 	}
 	if (OtherActor != nullptr && OtherActor->IsA(ABullet::StaticClass())) {
 		SetLife(GetLife() - 1);

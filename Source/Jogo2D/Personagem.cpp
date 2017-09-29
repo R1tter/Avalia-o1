@@ -18,6 +18,13 @@
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/BoxComponent.h"
+#include "Coin.h"
+#include "EliteMonster.h"
+#include "Engine/World.h"
+
+
+
+
 
 
 APersonagem::APersonagem() {
@@ -33,6 +40,7 @@ APersonagem::APersonagem() {
 	Camera->SetupAttachment(CameraBoom);
 	SelectedGun = -1;
 	Life = 1;
+	Key = 5;
 	/*PunchCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("PunchComponent"));
 	PunchCollision->SetCollisionProfileName("NoCollision");
 	PunchCollision->OnComponentHit.AddDynamic(this, &APersonagem::OnHit);
@@ -40,6 +48,16 @@ APersonagem::APersonagem() {
 	
 		
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	if (Key <= 0) {
+		UWorld* World = GetWorld();
+		FVector location = FVector(5060.0f, 0.0f, 360.0f);
+		FRotator rotate = FRotator(0.0f, 0.0f, 0.0f);
+		FActorSpawnParameters SpawnInfo;
+		AEliteMonster* EliteMonster = World->SpawnActor<AEliteMonster>(AEliteMonster::StaticClass(), location, rotate, SpawnInfo);
+
+	}
+
 }
 
 void APersonagem::BeginPlay()
@@ -102,6 +120,7 @@ void APersonagem::Tick(float DeltaSeconds)
 		Life = 1;
 		SetActorLocation(InitialLocation);
 	}
+	
 
 }
 
@@ -188,6 +207,16 @@ void APersonagem::SetLife(float newLife)
 float APersonagem::GetLife()
 {
 	return Life;
+}
+
+void APersonagem::SetKey(float newKey)
+{
+	Key = newKey;
+}
+
+float APersonagem::GetKey()
+{
+	return Key;
 }
 
 /*void APersonagem::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, FVector NormalImpulse, const FHitResult & Hit)

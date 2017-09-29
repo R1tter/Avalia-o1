@@ -43,6 +43,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	float GetLife();
 
+	void SetKey(float newKey);
+
+	float GetKey();
+
 private:
 
 	UPROPERTY(EditAnywhere)
@@ -85,6 +89,8 @@ private:
 	
 	float Life;
 	//void Punch();
+
+	float Key;
 
 	FVector InitialLocation;
 

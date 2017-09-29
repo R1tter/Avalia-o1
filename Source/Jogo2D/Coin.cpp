@@ -46,6 +46,9 @@ void ACoin::OnOverlapBegin(UPrimitiveComponent * OverlappedComp,
 
 	if (OtherActor != nullptr &&
 		OtherActor->IsA(APersonagem::StaticClass())) {
+		APersonagem* Personagem = Cast<APersonagem>(OtherActor);
+		Personagem->SetKey(Personagem->GetKey() - 1.0f);
+		UE_LOG(LogTemp, Warning, TEXT("%f"), Personagem->GetKey());
 
 		Destroy();
 
